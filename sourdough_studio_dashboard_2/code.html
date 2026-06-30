@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sourdough Studio | Artisanal Dashboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,wght@0,400;0,600;0,700;1,400&amp;family=Work+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#fff3ef",
+                    "secondary": "#805600",
+                    "tertiary-container": "#886a5c",
+                    "primary-fixed-dim": "#ffb59c",
+                    "error-container": "#ffdad6",
+                    "surface-container-highest": "#e4e2dd",
+                    "on-tertiary-fixed-variant": "#5a4135",
+                    "outline": "#86736d",
+                    "inverse-surface": "#30312e",
+                    "on-surface-variant": "#54433e",
+                    "surface-container-low": "#f5f3ee",
+                    "on-secondary-fixed": "#291800",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#2a170c",
+                    "on-tertiary": "#ffffff",
+                    "surface-bright": "#fbf9f4",
+                    "surface-dim": "#dbdad5",
+                    "on-error": "#ffffff",
+                    "surface-container-high": "#eae8e3",
+                    "surface-variant": "#e4e2dd",
+                    "error": "#ba1a1a",
+                    "primary-container": "#a65d43",
+                    "on-primary-container": "#fff4f0",
+                    "surface": "#fbf9f4",
+                    "inverse-on-surface": "#f2f1ec",
+                    "background": "#fbf9f4",
+                    "secondary-container": "#ffc56c",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#f0eee9",
+                    "secondary-fixed-dim": "#f6bc64",
+                    "on-secondary-fixed-variant": "#614000",
+                    "outline-variant": "#d9c2ba",
+                    "on-primary-fixed-variant": "#73351e",
+                    "on-secondary-container": "#785000",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#e3bfae",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#390c00",
+                    "inverse-primary": "#ffb59c",
+                    "primary": "#88452d",
+                    "on-surface": "#1b1c19",
+                    "primary-fixed": "#ffdbcf",
+                    "on-background": "#1b1c19",
+                    "tertiary": "#6d5245",
+                    "secondary-fixed": "#ffddb0",
+                    "surface-tint": "#904b33",
+                    "tertiary-fixed": "#ffdbcb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "unit": "8px",
+                    "container-max": "1200px"
+            },
+            "fontFamily": {
+                    "label-md": ["Work Sans"],
+                    "headline-lg-mobile": ["Literata"],
+                    "headline-md": ["Literata"],
+                    "caption": ["Work Sans"],
+                    "body-lg": ["Work Sans"],
+                    "body-md": ["Work Sans"],
+                    "headline-xl": ["Literata"],
+                    "headline-lg": ["Literata"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            background-color: #fbf9f4;
+            background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+            background-repeat: repeat;
+        }
+        .organic-gauge {
+            transition: stroke-dashoffset 1s ease-out;
+        }
+        .hover-lift {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(78, 54, 42, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f5f3ee;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d9c2ba;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen text-on-surface">
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden md:flex flex-col h-full w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant py-8 px-4 gap-4 z-50">
+<div class="flex items-center gap-3 px-2 mb-8">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">bakery_dining</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary leading-tight">Sourdough Studio</h1>
+<p class="font-caption text-caption text-on-surface-variant">Artisanal Dashboard</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2" id="sidebar-nav">
+<a class="nav-item text-primary font-bold flex items-center gap-unit py-3 px-4 bg-surface-container-high rounded-lg transition-all active:scale-[0.98]" href="#fermentation" data-section="fermentation">
+<span class="material-symbols-outlined">bubble_chart</span>
+<span class="font-label-md text-label-md">Fermentation</span>
+</a>
+<a class="nav-item text-on-surface-variant flex items-center gap-unit py-3 px-4 hover:bg-surface-container-high rounded-lg transition-all cursor-pointer active:scale-[0.98]" href="#deliveries" data-section="deliveries">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-md text-label-md">Deliveries</span>
+</a>
+<a class="nav-item text-on-surface-variant flex items-center gap-unit py-3 px-4 hover:bg-surface-container-high rounded-lg transition-all cursor-pointer active:scale-[0.98]" href="#starter-lab" data-section="starter-lab">
+<span class="material-symbols-outlined">science</span>
+<span class="font-label-md text-label-md">Starter Lab</span>
+</a>
+</nav>
+<button class="mt-4 bg-primary text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
+            Schedule Bake
+        </button>
+<div class="pt-8 mt-auto border-t border-outline-variant flex flex-col gap-1">
+<a class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md">Settings</span>
+</a>
+<a class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-md text-label-md">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 md:ml-64 p-margin-mobile md:p-margin-desktop bg-surface">
+<!-- TopNavBar (Responsive Shell) -->
+<header class="flex justify-between items-center w-full mb-10 h-16">
+<div class="flex flex-col">
+<h2 class="font-headline-xl text-headline-xl text-on-surface hidden md:block">Baker's Morning</h2>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface md:hidden">Sourdough Studio</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex flex-col items-end mr-4">
+<span class="font-label-md text-label-md text-on-surface">Elena Rossi</span>
+<span class="font-caption text-caption text-on-surface-variant">Master Baker</span>
+</div>
+<div class="relative cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-outline-variant object-cover" data-alt="A cinematic, high-quality portrait of a professional female baker with flour on her apron, standing in a sun-drenched artisanal kitchen. The lighting is warm and golden, reflecting the premium artisanal aesthetic of Sourdough Studio. The background is a soft blur of rustic wooden shelves and jars of starter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMAYCC1wugRF99Rs6wu5WknPOTj9XexuuaywvNJdghyQ5FsbaP9VSrH6414Vq65_kAZx6UbB2DuUurWUPJxgpzEUbUXatfPHvamqrNfQ_pxAwZWo4CBHJ53F-8kpO537RJX-u8YfeF6q92VfZjYCuILyPEYrG88DOZHgpelNRpamqI4SFSUuwv9hudysPhZ2Om_MuDxk1XOWj8pwLWAIlu_-8GLpM2_IqtofvJhKWPUCxa5a7H--8l24tp47yHHOspE0tjz7BbTWVE"/>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Starter Health (The Gauges) -->
+<section id="starter-lab" class="lg:col-span-8 bg-surface-container-low rounded-3xl p-8 border border-outline-variant hover-lift">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Starter Health</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">"Eve" — 124th Generation Culture</p>
+</div>
+<span class="px-4 py-1.5 bg-secondary-container text-on-secondary-container rounded-full font-label-md text-label-md">Ready to Bake</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+<!-- Gauge 1: Vitality -->
+<div class="flex flex-col items-center gap-4">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle cx="64" cy="64" fill="transparent" r="58" stroke="#e4e2dd" stroke-width="8"></circle>
+<circle class="organic-gauge" cx="64" cy="64" fill="transparent" r="58" stroke="#88452d" stroke-dasharray="364.4" stroke-dashoffset="7.3" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-md text-headline-md">98%</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Vitality</span>
+</div>
+<!-- Gauge 2: Acidity -->
+<div class="flex flex-col items-center gap-4">
+<div class="relative w-40 h-40 flex items-center justify-center">
+<!-- Visualizing "Balanced" as a steady wave or centered marker -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-full h-1 bg-outline-variant rounded-full"></div>
+<div class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-primary border-4 border-surface-container-low rounded-full shadow-md"></div>
+</div>
+<span class="mt-16 font-body-lg text-body-lg font-bold text-on-surface">Balanced</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Acidity pH 4.2</span>
+</div>
+<!-- Gauge 3: Temperature -->
+<div class="flex flex-col items-center gap-4">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle cx="64" cy="64" fill="transparent" r="58" stroke="#e4e2dd" stroke-width="8"></circle>
+<circle class="organic-gauge" cx="64" cy="64" fill="transparent" r="58" stroke="#805600" stroke-dasharray="364.4" stroke-dashoffset="100" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-md text-headline-md">74°F</span>
+</div>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Ambient</span>
+</div>
+</div>
+</section>
+<!-- Delivery Stats Card -->
+<section class="lg:col-span-4 bg-primary-container text-on-primary-container rounded-3xl p-8 flex flex-col justify-between hover-lift">
+<div>
+<h3 class="font-headline-md text-headline-md mb-2">Today's Batch</h3>
+<p class="font-body-md text-body-md opacity-90">42 Loaves scheduled for local delivery before 10:00 AM.</p>
+</div>
+<div class="mt-8 flex items-end justify-between">
+<div class="flex flex-col">
+<span class="text-4xl font-headline-xl">28</span>
+<span class="font-label-md text-label-md opacity-80 uppercase">Delivered</span>
+</div>
+<div class="h-16 w-16 bg-on-primary-container/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">check_circle</span>
+</div>
+</div>
+</section>
+<!-- Fermentation Timeline -->
+<section id="fermentation" class="lg:col-span-7 bg-surface-container-low rounded-3xl p-8 border border-outline-variant hover-lift">
+<div class="flex items-center justify-between mb-8">
+<h3 class="font-headline-md text-headline-md text-primary">Fermentation Timeline</h3>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span>
+</div>
+<div class="space-y-8">
+<!-- Bake 1 -->
+<div class="relative">
+<div class="flex justify-between items-center mb-3">
+<span class="font-body-md font-semibold text-on-surface">Country Blonde #402</span>
+<span class="font-label-md text-label-md text-primary italic">Bulk Fermentation</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-outline-variant w-[20%] border-r border-surface"></div> <!-- Autolyse -->
+<div class="h-full bg-primary w-[45%] relative"> <!-- Bulk -->
+<div class="absolute top-0 right-0 w-1 h-full bg-white opacity-40 animate-pulse"></div>
+</div>
+<div class="h-full bg-transparent w-[35%]"></div> <!-- Proof -->
+</div>
+<div class="flex justify-between mt-2 px-1">
+<span class="font-caption text-caption text-on-surface-variant">Autolyse (Done)</span>
+<span class="font-caption text-caption text-on-surface-variant">T-2.5h to Proof</span>
+</div>
+</div>
+<!-- Bake 2 -->
+<div class="relative opacity-60">
+<div class="flex justify-between items-center mb-3">
+<span class="font-body-md font-semibold text-on-surface">Walnut Rye #403</span>
+<span class="font-label-md text-label-md text-on-surface-variant">Autolyse</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-primary w-[15%]"></div>
+<div class="h-full bg-transparent w-[85%]"></div>
+</div>
+</div>
+<!-- Bake 3 -->
+<div class="relative">
+<div class="flex justify-between items-center mb-3">
+<span class="font-body-md font-semibold text-on-surface">Heritage Whole Wheat #398</span>
+<span class="font-label-md text-label-md text-secondary">Cold Proof (92%)</span>
+</div>
+<div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+<div class="h-full bg-outline-variant w-[20%]"></div>
+<div class="h-full bg-outline-variant w-[50%]"></div>
+<div class="h-full bg-secondary w-[22%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Delivery Routes Card -->
+<section id="deliveries" class="lg:col-span-5 bg-surface-container-low rounded-3xl border border-outline-variant flex flex-col overflow-hidden hover-lift">
+<div class="p-8 pb-4">
+<h3 class="font-headline-md text-headline-md text-primary">Delivery Routes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Route Alpha: West End Artisan Circuit</p>
+</div>
+<!-- Map View -->
+<div class="relative h-48 w-full bg-surface-container-high overflow-hidden">
+<div class="absolute inset-0 opacity-40 pointer-events-none" style="background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png')"></div>
+<!-- Simplified Route Visual -->
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover grayscale opacity-30 contrast-125" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTp08akdAmY7klVSuUuIFFpSUR9mEPHwDKZDHHoJw-It-nvtUP_wIWep4SX2sy7mCY_mw1btuRbetJ2HJcYvbGZkMOGiJqW-eEfB0pDCMOjTmr_Zuu5XznKhKeDuGR3RT-O2sK61D3oMtZeBoAmjbp1LoGVpbIR7EYsrrnwDNr95VUBmvjMZ4HSXM4vx4ty0YXaDykUZlGtTnwzCXf_tveyfZu93CEjZB1AKgRpDRFgVxIh7cw3oAo8YVoZc2zsfoZgks4tpm4TeyD"/>
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path d="M 50 150 Q 150 50 250 150 T 450 100" fill="none" stroke="#88452d" stroke-dasharray="8 4" stroke-width="3"></path>
+<circle cx="50" cy="150" fill="#88452d" r="6"></circle>
+<circle cx="150" cy="115" fill="#805600" r="4"></circle>
+<circle cx="250" cy="150" fill="#805600" r="4"></circle>
+<circle class="animate-ping opacity-75" cx="350" cy="120" fill="#88452d" r="8"></circle>
+<circle cx="350" cy="120" fill="#88452d" r="6"></circle>
+</svg>
+</div>
+</div>
+<!-- Stops List -->
+<div class="flex-1 p-6 custom-scrollbar overflow-y-auto">
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-on-surface-variant/10 flex items-center justify-center font-label-md text-label-md text-on-surface-variant">1</div>
+<div class="flex-1 border-b border-outline-variant pb-2">
+<p class="font-label-md text-label-md text-on-surface">The Oak &amp; Grain Café</p>
+<p class="font-caption text-caption text-on-surface-variant">4 Loaves delivered at 07:12</p>
+</div>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center font-label-md text-label-md text-primary">2</div>
+<div class="flex-1 border-b border-outline-variant pb-2">
+<p class="font-label-md text-label-md text-on-surface font-bold">Harlow Residence</p>
+<p class="font-caption text-caption text-on-surface-variant">ETA: 08:45 AM • Custom Rye</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">schedule</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-on-surface-variant/10 flex items-center justify-center font-label-md text-label-md text-on-surface-variant">3</div>
+<div class="flex-1 border-b border-outline-variant pb-2">
+<p class="font-label-md text-label-md text-on-surface">Baker’s Dozen Hub</p>
+<p class="font-caption text-caption text-on-surface-variant">12 Baguettes • Morning Pickup</p>
+</div>
+<span class="material-symbols-outlined text-outline-variant">location_on</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Atmospheric Bread Tile / Quick Action -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="md:col-span-1 bg-surface-container-high rounded-2xl p-4 flex flex-col items-center justify-center text-center border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary mb-2 transition-colors">add_circle</span>
+<span class="font-label-md text-label-md text-on-surface">Log New Batch</span>
+</div>
+<div class="md:col-span-3 bg-tertiary-container text-on-tertiary-container rounded-2xl p-6 flex items-center gap-6">
+<div class="hidden sm:block w-16 h-16 rounded-xl overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close-up shot of an artisanal sourdough loaf with a perfect golden crust and intricate scoring, shot in a warm, low-contrast cinematic style. The lighting is soft and directional, highlighting the texture of the flour dust. The aesthetic is organic and premium, reflecting the Sourdough Studio brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFE0foAoB71NRdzbnMmZfht20jnXkNXZzkw1_oddSLaOkty4YII7snSWpbkMiDOIPunriFz-RUirTlfNHKMRomymCSh_QJhHaak4ceeGR0hurUAmw0PdTneYQAdm8JLTTE_zh0DS-2vIkTEbgrK62AJCSYIcZjnYF9QciDQ-V9A1bP3cLPGQailUnvANL8iR4U1W69V4DrHfW-olUfT4bZZaiJmOdZfMW82umSfC8I7PUVI66zbj0-7BFvMsZl3of_927nc-JZDtpY"/>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md leading-none mb-1">Baker's Note</h4>
+<p class="font-body-md text-body-md opacity-90 italic">"The ambient humidity is slightly higher today. Reduce hydration by 2% for the Heritage Whole Wheat batch to maintain crumb integrity."</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-container-low flex justify-around items-center px-4 z-50 border-t border-outline-variant" id="mobile-nav">
+<a class="mobile-nav-item flex flex-col items-center gap-1 text-primary" href="#fermentation" data-section="fermentation">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bubble_chart</span>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Bake</span>
+</a>
+<a class="mobile-nav-item flex flex-col items-center gap-1 text-on-surface-variant" href="#deliveries" data-section="deliveries">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Route</span>
+</a>
+<div class="mb-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg border-4 border-surface shadow-primary/20">
+<span class="material-symbols-outlined text-white">add</span>
+</div>
+<a class="mobile-nav-item flex flex-col items-center gap-1 text-on-surface-variant" href="#starter-lab" data-section="starter-lab">
+<span class="material-symbols-outlined">science</span>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Lab</span>
+</a>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Tools</span>
+</button>
+</nav>
+<!-- Script for interaction -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Gauge animations
+            const gauges = document.querySelectorAll('.organic-gauge');
+            gauges.forEach(gauge => {
+                const offset = gauge.getAttribute('stroke-dashoffset');
+                gauge.style.strokeDashoffset = offset;
+            });
+
+            // Navigation Active State and Smooth Scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navItems = document.querySelectorAll('#sidebar-nav .nav-item');
+            const mobileNavItems = document.querySelectorAll('#mobile-nav .mobile-nav-item');
+
+            function activateNavItem(sectionId) {
+                // Desktop Nav
+                navItems.forEach(item => {
+                    if (item.getAttribute('data-section') === sectionId) {
+                        item.classList.remove('text-on-surface-variant', 'hover:bg-surface-container-high');
+                        item.classList.add('text-primary', 'font-bold', 'bg-surface-container-high');
+                    } else {
+                        item.classList.remove('text-primary', 'font-bold', 'bg-surface-container-high');
+                        item.classList.add('text-on-surface-variant', 'hover:bg-surface-container-high');
+                    }
+                });
+
+                // Mobile Nav
+                mobileNavItems.forEach(item => {
+                    if (item.getAttribute('data-section') === sectionId) {
+                        item.classList.remove('text-on-surface-variant');
+                        item.classList.add('text-primary');
+                        const icon = item.querySelector('.material-symbols-outlined');
+                        if (icon) icon.style.fontVariationSettings = "'FILL' 1";
+                    } else {
+                        item.classList.remove('text-primary');
+                        item.classList.add('text-on-surface-variant');
+                        const icon = item.querySelector('.material-symbols-outlined');
+                        if (icon) icon.style.fontVariationSettings = "'FILL' 0";
+                    }
+                });
+            }
+
+            // Intersection Observer to detect current section on scroll
+            const observerOptions = {
+                root: null,
+                rootMargin: '-20% 0px -60% 0px',
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        activateNavItem(entry.target.id);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => observer.observe(section));
+
+            // Smooth Scroll Click Handlers
+            const allLinks = document.querySelectorAll('a[href^="#"]');
+            allLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const targetId = link.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    e.preventDefault();
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center'
+                        });
+                        // Fallback activation
+                        activateNavItem(targetId.substring(1));
+                    }
+                });
+            });
+        });
+    </script>
+</body></html>
