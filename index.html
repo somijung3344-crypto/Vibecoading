@@ -111,15 +111,15 @@
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
             background-repeat: repeat;
         }
-        #bake-modal {
+        #bake-modal, #settings-modal, #support-modal {
             display: none;
             opacity: 0;
         }
-        #bake-modal.active {
+        #bake-modal.active, #settings-modal.active, #support-modal.active {
             display: flex;
             opacity: 1;
         }
-        #bake-modal.active > div {
+        #bake-modal.active > div, #settings-modal.active > div, #support-modal.active > div {
             transform: scale(1);
         }
         #notification-dropdown {
@@ -229,8 +229,8 @@
 </div>
 <div class="flex items-center gap-4">
 <div class="hidden md:flex flex-col items-end mr-4">
-<span class="font-label-md text-label-md text-on-surface">Elena Rossi</span>
-<span class="font-caption text-caption text-on-surface-variant">Master Baker</span>
+<span id="baker-name-display" class="font-label-md text-label-md text-on-surface">Elena Rossi</span>
+<span id="baker-role-display" class="font-caption text-caption text-on-surface-variant">Master Baker</span>
 </div>
 <div class="relative" id="notification-wrapper">
 <div id="notification-btn" class="relative cursor-pointer active:scale-95 transition-transform">
@@ -309,7 +309,7 @@
 <circle class="organic-gauge" cx="64" cy="64" fill="transparent" r="58" stroke="#805600" stroke-dasharray="364.4" stroke-dashoffset="100" stroke-width="8"></circle>
 </svg>
 <div class="absolute flex flex-col items-center">
-<span class="font-headline-md text-headline-md">74°F</span>
+<span id="temp-display" class="font-headline-md text-headline-md">74°F</span>
 </div>
 </div>
 <span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Ambient</span>
@@ -566,6 +566,95 @@ Schedule Bake
 </div>
 </div>
 
+<!-- Modal for Settings -->
+<div id="settings-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center transition-all opacity-0 pointer-events-none duration-300">
+<div class="bg-surface border border-outline-variant rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300 pointer-events-auto">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Settings</h3>
+<button id="close-settings-btn" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form id="settings-form" class="space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="baker-name-input">Baker Name</label>
+<input id="baker-name-input" type="text" value="Elena Rossi" required class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="baker-role-input">Baker Title</label>
+<input id="baker-role-input" type="text" value="Master Baker" required class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2">Temperature Unit</label>
+<div class="flex gap-4">
+<label class="flex items-center gap-2 cursor-pointer font-body-md text-on-surface">
+<input type="radio" name="temp-unit" value="F" checked class="accent-primary"> Fahrenheit (°F)
+</label>
+<label class="flex items-center gap-2 cursor-pointer font-body-md text-on-surface">
+<input type="radio" name="temp-unit" value="C" class="accent-primary"> Celsius (°C)
+</label>
+</div>
+</div>
+<button type="submit" class="w-full mt-4 bg-primary text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">save</span>
+Save Settings
+</button>
+</form>
+</div>
+</div>
+
+<!-- Modal for Support -->
+<div id="support-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center transition-all opacity-0 pointer-events-none duration-300">
+<div class="bg-surface border border-outline-variant rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300 pointer-events-auto">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Support & Help</h3>
+<button id="close-support-btn" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- FAQ Accordion -->
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-3">Frequently Asked Questions</h4>
+<div class="space-y-2">
+<div class="border border-outline-variant rounded-xl overflow-hidden bg-surface-container-low">
+<button class="w-full px-4 py-3 text-left font-label-md text-on-surface flex justify-between items-center hover:bg-surface-container-high transition-colors focus:outline-none" onclick="toggleFaq(this)">
+<span>How do I increase my starter vitality?</span>
+<span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+</button>
+<div class="faq-content hidden px-4 pb-3 pt-1 text-xs text-on-surface-variant leading-relaxed">
+Feed it at a regular 1:1:1 ratio (starter:flour:water) every 12 hours. Keep it in a warm environment (74-78°F) for peak yeast activity.
+</div>
+</div>
+<div class="border border-outline-variant rounded-xl overflow-hidden bg-surface-container-low">
+<button class="w-full px-4 py-3 text-left font-label-md text-on-surface flex justify-between items-center hover:bg-surface-container-high transition-colors focus:outline-none" onclick="toggleFaq(this)">
+<span>What is the ideal hydration for whole wheat?</span>
+<span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+</button>
+<div class="faq-content hidden px-4 pb-3 pt-1 text-xs text-on-surface-variant leading-relaxed">
+Whole wheat flour absorbs more water. A hydration rate between 78% and 85% is ideal to maintain a soft crumb while keeping the dough manageable.
+</div>
+</div>
+</div>
+</div>
+
+<!-- Support Form -->
+<div>
+<h4 class="font-label-md text-label-md text-primary mb-3">Ask a Master Baker</h4>
+<form id="support-form" class="space-y-3">
+<div>
+<textarea id="support-message" required rows="3" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface text-xs" placeholder="Describe your baking or setup issue..."></textarea>
+</div>
+<button type="submit" id="send-support-btn" class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px]">send</span>
+Send Message
+</button>
+</form>
+</div>
+</div>
+</div>
+</div>
+
 <!-- Toast Container -->
 <div id="toast-container" class="fixed top-6 right-6 z-[200] space-y-3 pointer-events-none"></div>
 <!-- Script for interaction -->
@@ -798,19 +887,139 @@ Schedule Bake
                 }
             });
 
-            // Toast placeholders for Settings, Support, Tools
-            const settingsBtn = document.getElementById('settings-btn');
-            const supportBtn = document.getElementById('support-btn');
+            // Toast placeholders for Tools
             const toolsBtn = document.getElementById('tools-btn');
+            if (toolsBtn) {
+                toolsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showToast('info', 'Tools panel is a demo simulation.', 'info');
+                });
+            }
 
-            const handleDemoAction = (e) => {
-                e.preventDefault();
-                showToast('info', 'This function is a demo simulation.', 'info');
+            // ==========================================================================
+            // SETTINGS & SUPPORT MODAL LOGIC
+            // ==========================================================================
+            const settingsModal = document.getElementById('settings-modal');
+            const settingsBtn = document.getElementById('settings-btn');
+            const closeSettingsBtn = document.getElementById('close-settings-btn');
+            const settingsForm = document.getElementById('settings-form');
+
+            const supportModal = document.getElementById('support-modal');
+            const supportBtn = document.getElementById('support-btn');
+            const closeSupportBtn = document.getElementById('close-support-btn');
+            const supportForm = document.getElementById('support-form');
+            const sendSupportBtn = document.getElementById('send-support-btn');
+
+            const bakerNameDisplay = document.getElementById('baker-name-display');
+            const bakerRoleDisplay = document.getElementById('baker-role-display');
+            const tempDisplay = document.getElementById('temp-display');
+
+            // Open/Close Settings
+            if (settingsBtn) {
+                settingsBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    settingsModal.classList.remove('pointer-events-none', 'opacity-0');
+                    settingsModal.classList.add('active');
+                });
+            }
+            if (closeSettingsBtn) {
+                closeSettingsBtn.addEventListener('click', () => {
+                    settingsModal.classList.remove('active');
+                    settingsModal.classList.add('pointer-events-none', 'opacity-0');
+                });
+            }
+            settingsModal.addEventListener('click', (e) => {
+                if (e.target === settingsModal) {
+                    settingsModal.classList.remove('active');
+                    settingsModal.classList.add('pointer-events-none', 'opacity-0');
+                }
+            });
+
+            // Submit Settings
+            if (settingsForm) {
+                settingsForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const name = document.getElementById('baker-name-input').value;
+                    const role = document.getElementById('baker-role-input').value;
+                    const unit = document.querySelector('input[name="temp-unit"]:checked').value;
+
+                    // Update Baker Profile Info
+                    if (bakerNameDisplay) bakerNameDisplay.textContent = name;
+                    if (bakerRoleDisplay) bakerRoleDisplay.textContent = role;
+
+                    // Update Temperature Unit
+                    if (tempDisplay) {
+                        if (unit === 'C') {
+                            tempDisplay.textContent = '23.3°C';
+                        } else {
+                            tempDisplay.textContent = '74°F';
+                        }
+                    }
+
+                    // Close Settings & Notify
+                    settingsModal.classList.remove('active');
+                    settingsModal.classList.add('pointer-events-none', 'opacity-0');
+                    showToast('settings', 'Settings saved successfully!');
+                });
+            }
+
+            // Open/Close Support
+            if (supportBtn) {
+                supportBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    supportModal.classList.remove('pointer-events-none', 'opacity-0');
+                    supportModal.classList.add('active');
+                });
+            }
+            if (closeSupportBtn) {
+                closeSupportBtn.addEventListener('click', () => {
+                    supportModal.classList.remove('active');
+                    supportModal.classList.add('pointer-events-none', 'opacity-0');
+                });
+            }
+            supportModal.addEventListener('click', (e) => {
+                if (e.target === supportModal) {
+                    supportModal.classList.remove('active');
+                    supportModal.classList.add('pointer-events-none', 'opacity-0');
+                }
+            });
+
+            // Submit Support Form
+            if (supportForm) {
+                supportForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    // Show Loading State
+                    sendSupportBtn.disabled = true;
+                    sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">autorenew</span>Sending...`;
+                    sendSupportBtn.classList.add('opacity-60');
+
+                    setTimeout(() => {
+                        // Reset button
+                        sendSupportBtn.disabled = false;
+                        sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">send</span>Send Message`;
+                        sendSupportBtn.classList.remove('opacity-60');
+
+                        // Reset form & Notify
+                        supportForm.reset();
+                        supportModal.classList.remove('active');
+                        supportModal.classList.add('pointer-events-none', 'opacity-0');
+                        showToast('check_circle', 'Message sent! We will contact you soon.');
+                    }, 1500);
+                });
+            }
+
+            // FAQ Accordion toggles
+            window.toggleFaq = function(button) {
+                const content = button.nextElementSibling;
+                const arrow = button.querySelector('span:last-child');
+                content.classList.toggle('hidden');
+                if (content.classList.contains('hidden')) {
+                    arrow.textContent = 'keyboard_arrow_down';
+                } else {
+                    arrow.textContent = 'keyboard_arrow_up';
+                }
             };
-
-            if (settingsBtn) settingsBtn.addEventListener('click', handleDemoAction);
-            if (supportBtn) supportBtn.addEventListener('click', handleDemoAction);
-            if (toolsBtn) toolsBtn.addEventListener('click', handleDemoAction);
 
             // ==========================================================================
             // HYDRATION CALCULATOR LOGIC
