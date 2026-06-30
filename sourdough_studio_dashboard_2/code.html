@@ -111,6 +111,42 @@
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
             background-repeat: repeat;
         }
+        #bake-modal {
+            display: none;
+            opacity: 0;
+        }
+        #bake-modal.active {
+            display: flex;
+            opacity: 1;
+        }
+        #bake-modal.active > div {
+            transform: scale(1);
+        }
+        #notification-dropdown {
+            display: none;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.2s ease-out;
+        }
+        #notification-dropdown.active {
+            display: block;
+            opacity: 1;
+            transform: scale(1);
+        }
+        .toast {
+            animation: slideInRight 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast-fade-out {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
         .organic-gauge {
             transition: stroke-dashoffset 1s ease-out;
         }
@@ -159,16 +195,16 @@
 <span class="font-label-md text-label-md">Starter Lab</span>
 </a>
 </nav>
-<button class="mt-4 bg-primary text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95">
+<button id="schedule-bake-btn" class="mt-4 bg-primary text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl flex items-center justify-center gap-2 transition-transform active:scale-95 hover:opacity-90">
 <span class="material-symbols-outlined text-[20px]">calendar_add_on</span>
             Schedule Bake
         </button>
 <div class="pt-8 mt-auto border-t border-outline-variant flex flex-col gap-1">
-<a class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<a id="settings-btn" class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all cursor-pointer" href="#settings">
 <span class="material-symbols-outlined">settings</span>
 <span class="font-label-md text-label-md">Settings</span>
 </a>
-<a class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<a id="support-btn" class="text-on-surface-variant flex items-center gap-unit py-2 px-4 hover:bg-surface-container-high rounded-lg transition-all cursor-pointer" href="#support">
 <span class="material-symbols-outlined">help</span>
 <span class="font-label-md text-label-md">Support</span>
 </a>
@@ -187,9 +223,34 @@
 <span class="font-label-md text-label-md text-on-surface">Elena Rossi</span>
 <span class="font-caption text-caption text-on-surface-variant">Master Baker</span>
 </div>
-<div class="relative cursor-pointer active:scale-95 transition-transform">
+<div class="relative" id="notification-wrapper">
+<div id="notification-btn" class="relative cursor-pointer active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-on-surface-variant text-2xl">notifications</span>
-<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+<span id="notification-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-error text-[10px] text-white font-bold flex items-center justify-center rounded-full">2</span>
+</div>
+<!-- Notification Dropdown Menu -->
+<div id="notification-dropdown" class="absolute right-0 mt-2 w-80 bg-surface-container-low border border-outline-variant rounded-2xl shadow-xl py-4 z-50">
+<div class="px-4 pb-2 border-b border-outline-variant flex justify-between items-center">
+<span class="font-bold text-on-surface text-sm">Notifications</span>
+<button id="clear-notifications-btn" class="text-xs text-primary hover:underline">Clear All</button>
+</div>
+<div class="max-h-64 overflow-y-auto custom-scrollbar px-2 py-1 space-y-1 mt-2" id="notification-list">
+<div class="p-3 rounded-lg hover:bg-surface-container-high transition-colors flex gap-3">
+<span class="material-symbols-outlined text-primary shrink-0">bubble_chart</span>
+<div>
+<p class="text-xs font-semibold text-on-surface">"Eve" Starter is active</p>
+<p class="text-[10px] text-on-surface-variant">Vitality is at 98%, ready to bake.</p>
+</div>
+</div>
+<div class="p-3 rounded-lg hover:bg-surface-container-high transition-colors flex gap-3">
+<span class="material-symbols-outlined text-secondary shrink-0">check_circle</span>
+<div>
+<p class="text-xs font-semibold text-on-surface">Batch complete</p>
+<p class="text-[10px] text-on-surface-variant">28 of 42 loaves successfully delivered.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 <img class="w-10 h-10 rounded-full border-2 border-outline-variant object-cover" data-alt="A cinematic, high-quality portrait of a professional female baker with flour on her apron, standing in a sun-drenched artisanal kitchen. The lighting is warm and golden, reflecting the premium artisanal aesthetic of Sourdough Studio. The background is a soft blur of rustic wooden shelves and jars of starter." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMAYCC1wugRF99Rs6wu5WknPOTj9XexuuaywvNJdghyQ5FsbaP9VSrH6414Vq65_kAZx6UbB2DuUurWUPJxgpzEUbUXatfPHvamqrNfQ_pxAwZWo4CBHJ53F-8kpO537RJX-u8YfeF6q92VfZjYCuILyPEYrG88DOZHgpelNRpamqI4SFSUuwv9hudysPhZ2Om_MuDxk1XOWj8pwLWAIlu_-8GLpM2_IqtofvJhKWPUCxa5a7H--8l24tp47yHHOspE0tjz7BbTWVE"/>
 </div>
@@ -268,7 +329,7 @@
 <h3 class="font-headline-md text-headline-md text-primary">Fermentation Timeline</h3>
 <span class="material-symbols-outlined text-on-surface-variant cursor-pointer">more_horiz</span>
 </div>
-<div class="space-y-8">
+<div class="space-y-8" id="timeline-list">
 <!-- Bake 1 -->
 <div class="relative">
 <div class="flex justify-between items-center mb-3">
@@ -367,7 +428,7 @@
 </div>
 <!-- Atmospheric Bread Tile / Quick Action -->
 <div class="mt-8 grid grid-cols-1 md:grid-cols-4 gap-4">
-<div class="md:col-span-1 bg-surface-container-high rounded-2xl p-4 flex flex-col items-center justify-center text-center border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
+<div id="log-new-batch-tile" class="md:col-span-1 bg-surface-container-high rounded-2xl p-4 flex flex-col items-center justify-center text-center border border-dashed border-outline-variant hover:border-primary transition-colors cursor-pointer group">
 <span class="material-symbols-outlined text-4xl text-on-surface-variant group-hover:text-primary mb-2 transition-colors">add_circle</span>
 <span class="font-label-md text-label-md text-on-surface">Log New Batch</span>
 </div>
@@ -392,18 +453,55 @@
 <span class="material-symbols-outlined">local_shipping</span>
 <span class="text-[10px] font-label-md uppercase tracking-tighter">Route</span>
 </a>
-<div class="mb-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg border-4 border-surface shadow-primary/20">
+<div id="mobile-add-btn" class="mb-8 w-12 h-12 bg-primary rounded-full flex items-center justify-center shadow-lg border-4 border-surface shadow-primary/20 cursor-pointer active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-white">add</span>
 </div>
 <a class="mobile-nav-item flex flex-col items-center gap-1 text-on-surface-variant" href="#starter-lab" data-section="starter-lab">
 <span class="material-symbols-outlined">science</span>
 <span class="text-[10px] font-label-md uppercase tracking-tighter">Lab</span>
 </a>
-<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<button id="tools-btn" class="flex flex-col items-center gap-1 text-on-surface-variant">
 <span class="material-symbols-outlined">settings</span>
 <span class="text-[10px] font-label-md uppercase tracking-tighter">Tools</span>
 </button>
 </nav>
+
+<!-- Modal for Schedule Bake -->
+<div id="bake-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100] flex items-center justify-center transition-all opacity-0 pointer-events-none duration-300">
+<div class="bg-surface border border-outline-variant rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300 pointer-events-auto">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Schedule New Bake</h3>
+<button id="close-modal-btn" class="text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form id="bake-form" class="space-y-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="bread-name">Bread Name</label>
+<input id="bread-name" type="text" required class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface" placeholder="e.g. Cranberry Walnut #404">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="bake-stage">Initial Stage</label>
+<select id="bake-stage" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface">
+<option value="Autolyse">Autolyse</option>
+<option value="Bulk Fermentation" selected>Bulk Fermentation</option>
+<option value="Cold Proof">Cold Proof</option>
+</select>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-2" for="bake-progress">Initial Progress (%)</label>
+<input id="bake-progress" type="number" min="0" max="100" value="20" required class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface">
+</div>
+<button type="submit" class="w-full mt-4 bg-primary text-on-primary font-label-md text-label-md py-4 px-6 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">calendar_add_on</span>
+Schedule Bake
+</button>
+</form>
+</div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="fixed top-6 right-6 z-[200] space-y-3 pointer-events-none"></div>
 <!-- Script for interaction -->
 <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -469,7 +567,7 @@
             allLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
                     const targetId = link.getAttribute('href');
-                    if (targetId === '#') return;
+                    if (targetId === '#' || targetId === '#settings' || targetId === '#support') return;
                     
                     e.preventDefault();
                     const targetElement = document.querySelector(targetId);
@@ -483,6 +581,170 @@
                     }
                 });
             });
+
+            // ==========================================================================
+            // INTERACT BUTTONS HANDLERS (Modal, Notifications, Toast)
+            // ==========================================================================
+
+            // Toast system
+            const toastContainer = document.getElementById('toast-container');
+            function showToast(icon, message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = 'toast pointer-events-auto bg-surface-container-low border border-outline-variant rounded-2xl p-4 shadow-xl flex items-center gap-3 w-72';
+                
+                let iconColor = 'text-primary';
+                if (type === 'error') iconColor = 'text-error';
+                else if (type === 'info') iconColor = 'text-secondary';
+
+                toast.innerHTML = `
+                    <span class="material-symbols-outlined ${iconColor}">${icon}</span>
+                    <span class="font-label-md text-label-md text-on-surface">${message}</span>
+                `;
+                toastContainer.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('toast-fade-out');
+                    setTimeout(() => {
+                        toast.remove();
+                    }, 300);
+                }, 3000);
+            }
+
+            // Modal Controls
+            const modal = document.getElementById('bake-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const openModalBtns = [
+                document.getElementById('schedule-bake-btn'),
+                document.getElementById('mobile-add-btn'),
+                document.getElementById('log-new-batch-tile')
+            ];
+
+            function openModal() {
+                modal.classList.remove('pointer-events-none', 'opacity-0');
+                modal.classList.add('active');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+                modal.classList.add('pointer-events-none', 'opacity-0');
+            }
+
+            openModalBtns.forEach(btn => {
+                if (btn) btn.addEventListener('click', openModal);
+            });
+            if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // Form Submit for New Bake
+            const bakeForm = document.getElementById('bake-form');
+            const timelineList = document.getElementById('timeline-list');
+            const notificationList = document.getElementById('notification-list');
+            const notificationBadge = document.getElementById('notification-badge');
+            let notificationCount = 2;
+
+            bakeForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const breadName = document.getElementById('bread-name').value;
+                const stage = document.getElementById('bake-stage').value;
+                const progress = document.getElementById('bake-progress').value;
+
+                // Add to Timeline
+                const newTimelineItem = document.createElement('div');
+                newTimelineItem.className = 'relative transition-all duration-500 opacity-0 transform translate-y-4';
+                
+                let stageColorClass = 'text-primary';
+                let progressBgClass = 'bg-primary';
+                if (stage === 'Cold Proof') {
+                    stageColorClass = 'text-secondary';
+                    progressBgClass = 'bg-secondary';
+                } else if (stage === 'Autolyse') {
+                    stageColorClass = 'text-on-surface-variant';
+                    progressBgClass = 'bg-outline-variant';
+                }
+
+                newTimelineItem.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-body-md font-semibold text-on-surface">${breadName}</span>
+                        <span class="font-label-md text-label-md ${stageColorClass} italic">${stage} (${progress}%)</span>
+                    </div>
+                    <div class="h-3 w-full bg-surface-container-high rounded-full overflow-hidden flex">
+                        <div class="h-full ${progressBgClass}" style="width: ${progress}%"></div>
+                        <div class="h-full bg-transparent" style="width: ${100 - progress}%"></div>
+                    </div>
+                `;
+
+                timelineList.insertBefore(newTimelineItem, timelineList.firstChild);
+                
+                setTimeout(() => {
+                    newTimelineItem.classList.remove('opacity-0', 'translate-y-4');
+                }, 50);
+
+                // Add to Notifications list
+                const newNotification = document.createElement('div');
+                newNotification.className = 'p-3 rounded-lg hover:bg-surface-container-high transition-colors flex gap-3';
+                newNotification.innerHTML = `
+                    <span class="material-symbols-outlined text-primary shrink-0">calendar_today</span>
+                    <div>
+                        <p class="text-xs font-semibold text-on-surface">New Bake Scheduled</p>
+                        <p class="text-[10px] text-on-surface-variant">${breadName} has started ${stage}.</p>
+                    </div>
+                `;
+                notificationList.insertBefore(newNotification, notificationList.firstChild);
+
+                // Update Notification count
+                notificationCount++;
+                notificationBadge.textContent = notificationCount;
+                notificationBadge.style.display = 'flex';
+
+                closeModal();
+                bakeForm.reset();
+                showToast('check_circle', 'Bake scheduled successfully!');
+            });
+
+            // Notification Dropdown controls
+            const notificationBtn = document.getElementById('notification-btn');
+            const notificationDropdown = document.getElementById('notification-dropdown');
+            const clearNotificationsBtn = document.getElementById('clear-notifications-btn');
+
+            if (notificationBtn) {
+                notificationBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notificationDropdown.classList.toggle('active');
+                    notificationBadge.style.display = 'none';
+                    notificationCount = 0;
+                });
+            }
+
+            if (clearNotificationsBtn) {
+                clearNotificationsBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    notificationList.innerHTML = `
+                        <p class="text-xs text-on-surface-variant text-center py-6">No notifications</p>
+                    `;
+                });
+            }
+
+            document.addEventListener('click', (e) => {
+                if (notificationDropdown && !notificationDropdown.contains(e.target) && e.target !== notificationBtn) {
+                    notificationDropdown.classList.remove('active');
+                }
+            });
+
+            // Toast placeholders for Settings, Support, Tools
+            const settingsBtn = document.getElementById('settings-btn');
+            const supportBtn = document.getElementById('support-btn');
+            const toolsBtn = document.getElementById('tools-btn');
+
+            const handleDemoAction = (e) => {
+                e.preventDefault();
+                showToast('info', 'This function is a demo simulation.', 'info');
+            };
+
+            if (settingsBtn) settingsBtn.addEventListener('click', handleDemoAction);
+            if (supportBtn) supportBtn.addEventListener('click', handleDemoAction);
+            if (toolsBtn) toolsBtn.addEventListener('click', handleDemoAction);
         });
     </script>
 </body></html>
