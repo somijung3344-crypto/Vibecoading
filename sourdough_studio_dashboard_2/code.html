@@ -643,7 +643,12 @@ Whole wheat flour absorbs more water. A hydration rate between 78% and 85% is id
 <h4 class="font-label-md text-label-md text-primary mb-3">Ask a Master Baker</h4>
 <form id="support-form" class="space-y-3">
 <div>
-<textarea id="support-message" required rows="3" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface text-xs" placeholder="Describe your baking or setup issue..."></textarea>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="support-email">Reply Email</label>
+<input id="support-email" name="email" type="email" required class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-2 focus:outline-none focus:border-primary text-on-surface text-xs" placeholder="e.g. baker@example.com">
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface-variant mb-1" for="support-message">Message</label>
+<textarea id="support-message" name="message" required rows="3" class="w-full bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:outline-none focus:border-primary text-on-surface text-xs" placeholder="Describe your baking or setup issue..."></textarea>
 </div>
 <button type="submit" id="send-support-btn" class="w-full bg-primary text-on-primary font-label-md text-label-md py-3 px-4 rounded-xl flex items-center justify-center gap-2 hover:opacity-90 active:scale-95 transition-transform">
 <span class="material-symbols-outlined text-[16px]">send</span>
@@ -984,28 +989,69 @@ Send Message
                 }
             });
 
-            // Submit Support Form
+            // Submit Support Form (Formspree Email Integration)
             if (supportForm) {
                 supportForm.addEventListener('submit', (e) => {
                     e.preventDefault();
                     
+                    const message = document.getElementById('support-message').value;
+                    const email = document.getElementById('support-email').value;
+
                     // Show Loading State
                     sendSupportBtn.disabled = true;
                     sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px] animate-spin">autorenew</span>Sending...`;
                     sendSupportBtn.classList.add('opacity-60');
 
-                    setTimeout(() => {
-                        // Reset button
-                        sendSupportBtn.disabled = false;
-                        sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">send</span>Send Message`;
-                        sendSupportBtn.classList.remove('opacity-60');
+                    // Formspree Endpoint Placeholder
+                    // 사용자의 Formspree endpoint 고유 키를 입력하면 실제로 이메일 수신이 작동합니다.
+                    const FORMSPREE_ENDPOINT = 'YOUR_FORMSPREE_ENDPOINT_HERE'; 
 
-                        // Reset form & Notify
-                        supportForm.reset();
-                        supportModal.classList.remove('active');
-                        supportModal.classList.add('pointer-events-none', 'opacity-0');
-                        showToast('check_circle', 'Message sent! We will contact you soon.');
-                    }, 1500);
+                    if (FORMSPREE_ENDPOINT === 'YOUR_FORMSPREE_ENDPOINT_HERE') {
+                        // Simulation Mode
+                        setTimeout(() => {
+                            sendSupportBtn.disabled = false;
+                            sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">send</span>Send Message`;
+                            sendSupportBtn.classList.remove('opacity-60');
+
+                            supportForm.reset();
+                            supportModal.classList.remove('active');
+                            supportModal.classList.add('pointer-events-none', 'opacity-0');
+                            showToast('check_circle', 'Simulation sent! (Configure Formspree to send real email.)', 'info');
+                        }, 1500);
+                    } else {
+                        // Real Mode
+                        fetch(FORMSPREE_ENDPOINT, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                email: email,
+                                message: message
+                            })
+                        })
+                        .then(response => {
+                            sendSupportBtn.disabled = false;
+                            sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">send</span>Send Message`;
+                            sendSupportBtn.classList.remove('opacity-60');
+
+                            if (response.ok) {
+                                supportForm.reset();
+                                supportModal.classList.remove('active');
+                                supportModal.classList.add('pointer-events-none', 'opacity-0');
+                                showToast('check_circle', 'Message sent successfully!');
+                            } else {
+                                showToast('error', 'Failed to send message. Please try again.', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            sendSupportBtn.disabled = false;
+                            sendSupportBtn.innerHTML = `<span class="material-symbols-outlined text-[16px]">send</span>Send Message`;
+                            sendSupportBtn.classList.remove('opacity-60');
+                            showToast('error', 'Error sending message. Network issue.', 'error');
+                        });
+                    }
                 });
             }
 
